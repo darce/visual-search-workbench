@@ -18,14 +18,14 @@ versioned, and can be checked against a digest.
 |---|---|
 | Mac | **Apple silicon only.** There is no Intel build; an Intel Mac cannot open it. |
 | macOS | 14.0 Sonoma or later |
-| Download | ~294 MB disk image |
-| Installed | ~322 MB — the models are inside the app, not downloaded later |
+| Download | ~295 MB disk image |
+| Installed | ~330 MB — the models are inside the app, not downloaded later |
 
 ## Two things to know first
 
 Both follow from this being independent work rather than a shipped commercial
 product. Neither is a defect, and you should decide about them before you
-download 294 MB.
+download 295 MB.
 
 ### It is not notarized by Apple
 
