@@ -5,6 +5,14 @@ you drop on it — and keeps gallery bytes on the machine.
 
 **[Download the latest release →](https://github.com/darce/visual-search-workbench/releases/latest)**
 
+On that page, under **Assets**, take the one file named
+`VisualSearchWorkbench-<version>.dmg` (~295 MB). That is the app.
+
+The other three assets are optional. `SHA256SUMS` is only for [checking the
+bytes](#check-the-bytes). The two **Source code** archives are attached
+automatically by GitHub to every tag and cannot be removed; there is no source
+here, so they hold this README and nothing else.
+
 More about the design and the reasoning behind it:
 [darce.xyz/projects/visual-search-workbench](https://darce.xyz/projects/visual-search-workbench/)
 
