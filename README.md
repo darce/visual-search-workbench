@@ -1,90 +1,149 @@
 # Visual Search Workbench
 
-A native macOS app that searches the folders you choose — by text, or by a picture
-you drop on it — and keeps gallery bytes on the machine.
+A native macOS app for finding photos in the folders you choose: search by text
+or by a picture, explore dates and places, and make experimental cutouts.
+Search and the bundled models run on your Mac.
 
-**[Download the latest release →](https://github.com/darce/visual-search-workbench/releases/latest)**
+**[Download the latest release](https://github.com/darce/visual-search-workbench/releases/latest)**
+· **[0.2.9 release notes](https://github.com/darce/visual-search-workbench/releases/tag/v0.2.9)**
+· [Project and design notes](https://darce.xyz/projects/visual-search-workbench/)
 
-On that page, under **Assets**, take the one file named
-`VisualSearchWorkbench-<version>.dmg` (~295 MB). That is the app.
+This repository distributes the built app and its documentation. Application
+source is not included.
 
-The other three assets are optional. `SHA256SUMS` is only for [checking the
-bytes](#check-the-bytes). The two **Source code** archives are attached
-automatically by GitHub to every tag and cannot be removed; there is no source
-here, so they hold this README and nothing else.
+## Download and install
 
-More about the design and the reasoning behind it:
-[darce.xyz/projects/visual-search-workbench](https://darce.xyz/projects/visual-search-workbench/)
+The current release is **0.2.9**.
 
-This repository distributes the built application and nothing else. There is no
-source here. It exists so that a published download link keeps working, stays
-versioned, and can be checked against a digest.
-
-## Requirements
-
-| | |
+| Requirement | Details |
 |---|---|
-| Mac | **Apple silicon only.** There is no Intel build; an Intel Mac cannot open it. |
+| Mac | Universal build: Apple silicon and Intel. Native validation was performed on Apple silicon. |
 | macOS | 14.0 Sonoma or later |
-| Download | ~295 MB disk image |
-| Installed | ~330 MB — the models are inside the app, not downloaded later |
+| Download | Approximately 300 MiB |
+| Installed app | Approximately 333 MiB, including the models |
 
-## Two things to know first
+1. Download [**VisualSearchWorkbench-0.2.9.dmg**](https://github.com/darce/visual-search-workbench/releases/download/v0.2.9/VisualSearchWorkbench-0.2.9.dmg).
+2. Open the disk image and drag **Visual Search Workbench** to **Applications**.
+3. Open the app, choose your photo folders, and index them before searching.
 
-Both follow from this being independent work rather than a shipped commercial
-product. Neither is a defect, and you should decide about them before you
-download 295 MB.
+The search, segmentation and object-detection models are included. No model
+download or model-folder setup is needed for the release app.
 
-### It is not notarized by Apple
+### Signing and first launch
 
-Notarization requires a paid Apple Developer Program membership this project does
-not hold, so the app is ad-hoc signed and macOS will refuse the first double-click.
+The app is signed with an **Apple Development identity** and is **not notarized
+by Apple**. macOS may block its first launch. Use **System Settings → Privacy &
+Security**, find the message naming the app, and choose **Open Anyway**.
 
-Apple's own override opens it: **System Settings → Privacy & Security**, scroll to
-the message naming the app, then **Open Anyway**. You do this once.
+### Check the download
 
-If you would rather not run software Apple has not checked, that is a reasonable
-place to stop, and no argument here is meant to talk you out of it.
+Download [SHA256SUMS](https://github.com/darce/visual-search-workbench/releases/download/v0.2.9/SHA256SUMS)
+into the same folder as the disk image, then run:
 
-### Check the bytes
-
-Every release publishes a `SHA256SUMS` file beside the disk image. GitHub's CDN
-serves the download, not this project, and the digest is the only check that
-covers the whole path from build to your disk:
-
-```
+```sh
 shasum -a 256 -c SHA256SUMS
 ```
 
-Run it in the folder holding both files. `OK` means you received what was built.
-Anything else means stop and do not open the image.
+An `OK` result confirms that the disk image matches the published checksum.
 
-## What it does
+Only the DMG is needed to install. GitHub automatically attaches **Source code**
+ZIP and tar archives to every release; those contain the files in this download
+repository, not the application source.
 
-- **Search by text or by image.** Describe what you want, or drop a photo in and
-  find its visual neighbours. Searching by picture is the capability macOS Photos
-  does not offer.
-- **Reads only the folders you pick.** Images stay where they are.
-- **Runs offline.** The embedding, segmentation, and detection models ship inside
-  the app, so nothing is fetched on first launch and the app has no reason to open
-  a socket.
-- **Says what it does not know.** Missing, partial, and unavailable data each get a
-  named state, so an incomplete view of a library never reads as a complete one.
+## What you can do
+
+- **Search by text or image.** Describe a photo or drop in a picture to find
+  visual neighbours.
+- **Explore dates and places.** Narrow results with the Timeline and Places
+  views while keeping the accepted results visible during updates.
+- **Inspect the original.** Keep results beside a selected-photo inspector,
+  see the photo's original location, and use **Show in Finder**.
+- **Make cutouts.** Experimental segmentation creates saved layers. Cutout jobs
+  run one photo at a time, with queued status and per-photo cancellation.
+- **Recover an incomplete index.** Successfully indexed photos remain usable
+  after cancellation or individual failures. Recorded failed photos have an
+  explicit retry action.
+- **Compare two photos.** Experimental **Compare blur** supports manual A/B
+  region inspection. It does not provide automatic best-shot ranking or
+  calibrated blur-quality scores.
+
+### What's new in 0.2.9
+
+This download includes the changes prepared for 0.2.7 and 0.2.8.
+
+- Fixes repeated Resume attempts that made no indexing progress, and makes
+  failed-photo recovery visible.
+- Improves search status, selected-photo actions, cutout-job feedback and
+  thumbnail selection.
+- Adds a responsive comparison layout with **Choose A** and **Retry A**
+  recovery, plus a measured admission path for supported JPEG/PNG originals.
+- Includes Timeline cancellation and stale-result fixes, queued cutouts,
+  folder-access improvements, and a fix for the text-search Core ML GPU crash.
+
+See the [release notes](https://github.com/darce/visual-search-workbench/releases/tag/v0.2.9)
+for the full change list and validation scope.
+
+## Privacy and optional network features
+
+Photos stay in their chosen folders. Text search, image search, segmentation and
+object detection run locally using the bundled models.
+
+These network features are **off until you enable them**:
+
+| Feature | What enabling it does |
+|---|---|
+| Apple MapKit basemaps | Fetches online map content. The bundled Natural Earth basemap works offline. |
+| Layer naming through local Ollama | Contacts an Ollama service on your Mac. |
+| Layer naming through a server you specify | Sends reduced copies of photos to that server after consent. |
+
+Photo-location storage has its own privacy setting and purge action. Review the
+app's privacy settings before enabling optional services.
+
+## Experimental comparison limits
+
+The expanded measured-camera comparison path accepts **opaque RGB8 JPEG/PNG**
+originals with EXIF orientation **1 or 6**, up to **3,264 pixels per edge** and
+**7,990,272 source pixels**, within its measured resource limits.
+
+Existing primary-HEIF preview support remains; expanded HEIF comparison
+admission is unavailable. Unsupported or unreadable inputs may require
+choosing another photo or retrying. The smallest comparison-window layout and
+OS keyboard/VoiceOver behavior remain unverified. A full-suite 0.2.9 rerun was
+not completed; focused native, regression and resource checks, documentation
+checks, universal packaging, signature checks and an isolated launch smoke
+check are recorded in the release evidence.
+
+## Software licence
+
+The first-party app uses the **[VSW Personal and Internal Use terms](LICENSE)**,
+based on PolyForm Internal Use 1.0.0 with an additional personal-use permission.
+
+Personal, noncommercial use and your own internal business use are permitted.
+Redistribution, repackaging into another product, or providing an externally
+offered service requires separate permission. Attribution alone does not grant
+those rights.
+
+Commercial licensing or support for otherwise permitted use is optional; the
+terms impose no usage, seat, revenue or installation-count threshold.
+[NOTICE](NOTICE) identifies first-party and third-party scope. The same terms
+ship inside the app at `Contents/Resources/VSW-LICENSE.txt`.
 
 ## Bundled models and their licences
 
-The disk image redistributes third-party model weights. Each is permissively
-licensed and carries its attribution inside the app bundle, at
-`Contents/Resources/LICENSE-NOTICES.md` and
-`Contents/Resources/sis-models/LICENSES/`.
+Third-party components retain their own terms. The app includes the full
+inventory at `Contents/Resources/LICENSE-NOTICES.md`, with licence texts and
+attribution alongside the models.
 
 | Component | Role | Licence | Upstream |
 |---|---|---|---|
-| OpenCLIP ViT-B/32, LAION-2B | text and image embeddings | Apache-2.0 | [`laion/CLIP-ViT-B-32-laion2B-s34B-b79K`](https://huggingface.co/laion/CLIP-ViT-B-32-laion2B-s34B-b79K) |
-| MobileSAM, Core ML export | segmentation | Apache-2.0 | [ChaoningZhang/MobileSAM](https://github.com/ChaoningZhang/MobileSAM) via [john-rocky/SamKit](https://github.com/john-rocky/SamKit) v1.0.0 |
-| LibreYOLOX-Nano | object detection | Apache-2.0 | [`LibreYOLO/LibreYOLOXn`](https://huggingface.co/LibreYOLO/LibreYOLOXn), originating in [Megvii-BaseDetection/YOLOX](https://github.com/Megvii-BaseDetection/YOLOX) |
-| open_clip BPE vocabulary | tokenization | Apache-2.0 | [mlfoundations/open_clip](https://github.com/mlfoundations/open_clip) |
-| Natural Earth 110m land and coastline | offline basemap behind Places | Public domain | [nvkelso/natural-earth-vector](https://github.com/nvkelso/natural-earth-vector) |
+| OpenCLIP ViT-B/32, LAION-2B | Text and image embeddings | MIT, declared by the pinned model card | [laion/CLIP-ViT-B-32-laion2B-s34B-b79K](https://huggingface.co/laion/CLIP-ViT-B-32-laion2B-s34B-b79K/tree/1a25a446712ba5ee05982a381eed697ef9b435cf) |
+| MobileSAM, SamKit v1.0.0 Core ML export | Experimental segmentation | Apache-2.0 | [MobileSAM](https://github.com/ChaoningZhang/MobileSAM) via [SamKit v1.0.0](https://github.com/john-rocky/SamKit/releases/tag/v1.0.0) |
+| LibreYOLOX-Nano | Object detection | Apache-2.0 | [LibreYOLO/LibreYOLOXn](https://huggingface.co/LibreYOLO/LibreYOLOXn), originating in [YOLOX](https://github.com/Megvii-BaseDetection/YOLOX) |
+| CLIP BPE vocabulary, redistributed by open_clip | Tokenization | MIT | [OpenAI CLIP](https://github.com/openai/CLIP) and [open_clip](https://github.com/mlfoundations/open_clip) |
+| Natural Earth 110m land and coastline | Offline basemap | Public domain | [Natural Earth vector data](https://github.com/nvkelso/natural-earth-vector) |
 
-Model weights are pinned by upstream revision and verified by SHA-256 at build
-time, so a given release always contains the same weights.
+Model payloads are pinned and verified by SHA-256 during packaging. The
+OpenCLIP model card declares MIT but supplies no weight-specific licence text
+or copyright holder; the relevant OpenAI CLIP and open_clip MIT notices ship
+with the app. MobileSAM/SamKit and detector licences and notices are included
+separately.

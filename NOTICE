@@ -1,0 +1,12 @@
+Visual Search Workbench
+Copyright 2026 Daniel Arcé
+
+The root LICENSE states the terms for the first-party application distributed
+in this repository's release assets. Application source is not included here.
+
+Third-party model weights, tokenizer assets and map data retain their own terms
+and notices. See the component inventory in README.md and, inside the app,
+Contents/Resources/LICENSE-NOTICES.md and the licences/notices accompanying
+each artifact.
+
+The software licence grants no additional rights in project trademarks or branding.
